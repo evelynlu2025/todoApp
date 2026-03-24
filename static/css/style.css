@@ -133,6 +133,10 @@ a:hover { text-decoration: underline; }
 }
 .badge-normal { background: #f3f4f6; color: var(--text-muted); }
 .badge-today { background: #fef3c7; color: #92400e; }
+.hours-badge {
+  font-size: .72rem; font-weight: 600; padding: .2rem .6rem;
+  border-radius: 999px; background: #e0e7ff; color: #3730a3;
+}
 .badge-overdue { background: #fecaca; color: #991b1b; }
 
 .check-btn {
