@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}My Tasks — Tesa{% endblock %}
+{% block content %}
+
+<div class="dashboard-header">
+  <div>
+    <h1>My Tasks</h1>
+    <p class="subtitle" id="date-subtitle"></p>
+  </div>
+  <button class="btn btn-primary" id="open-add-modal">+ New Task</button>
+</div>
+
+<!-- filters -->
+<div class="filters">
+  <button class="filter-btn active" data-filter="all">All</button>
+  <button class="filter-btn" data-filter="today">Due Today</button>
+  <button class="filter-btn" data-filter="upcoming">Upcoming</button>
+  <button class="filter-btn" data-filter="overdue">Overdue</button>
+  <button class="filter-btn" data-filter="completed">Completed</button>
+</div>
+
+<div class="task-grid" id="task-grid"></div>
+
+<script id="initial-tasks" type="application/json">
+  [{% for task in tasks %}{"id":{{ task.id }},"title":"{{ task.title|escapejs }}","description":"{{ task.description|escapejs }}","course":"{{ task.course|escapejs }}","due_date":"{{ task.due_date|date:'Y-m-d' }}","completed":{{ task.completed|yesno:'true,false' }}}{% if not forloop.last %},{% endif %}{% endfor %}]
+</script>
+
+<!-- modal overlay -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <h2 id="modal-title">New Task</h2>
+    <form id="task-form">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="id_title">Task title</label>
+        <input type="text" id="id_title" name="title" placeholder="e.g. Finish homework 3" required>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="id_course">Course</label>
+          <input type="text" id="id_course" name="course" placeholder="e.g. 15-112">
+        </div>
+        <div class="form-group">
+          <label for="id_due_date">Due date</label>
+          <input type="date" id="id_due_date" name="due_date" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="id_description">Description <span class="optional">(optional)</span></label>
+        <textarea id="id_description" name="description" rows="3" placeholder="Optional details..."></textarea>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-outline" id="modal-cancel">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="modal-submit">Add Task</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}
+{% block scripts %}
+<script>
+  const CSRF = '{{ csrf_token }}';
+  const TODAY = '{{ today|date:"Y-m-d" }}';
+</script>
+<script src="{% static 'js/app.js' %}"></script>
+{% endblock %}

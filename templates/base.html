@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Tesa{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+  <nav class="navbar">
+    <a href="{% url 'task_list' %}" class="nav-brand">Tesa</a>
+    <div class="nav-links">
+      {% if user.is_authenticated %}
+        <span class="nav-user">{{ user.username }}</span>
+        <a href="{% url 'logout' %}" class="btn btn-sm btn-outline">Log out</a>
+      {% else %}
+        <a href="{% url 'login' %}" class="btn btn-sm btn-outline">Log in</a>
+        <a href="{% url 'register' %}" class="btn btn-sm btn-primary">Sign up</a>
+      {% endif %}
+    </div>
+  </nav>
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
+  {% block scripts %}{% endblock %}
+</body>
+</html>
