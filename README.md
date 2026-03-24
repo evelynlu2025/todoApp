@@ -61,3 +61,4 @@ tesaAPP/
 
 ## Merged PR Log
 
+- **evelynlu2025** | 2026-03-24 | [#2 — feat: add estimated hours field to tasks](https://github.com/evelynlu2025/todoApp/pull/2)
