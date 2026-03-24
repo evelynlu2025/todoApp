@@ -8,7 +8,7 @@ from .models import Task
 class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
-        fields = ["title", "description", "course", "due_date"]
+        fields = ["title", "description", "course", "due_date", "estimated_hours"]
         widgets = {
             "title": forms.TextInput(attrs={"placeholder": "e.g. Finish homework 3"}),
             "description": forms.Textarea(
@@ -18,6 +18,9 @@ class TaskForm(forms.ModelForm):
             "due_date": forms.DateInput(
                 attrs={"type": "date"},
                 format="%Y-%m-%d",
+            ),
+            "estimated_hours": forms.NumberInput(
+                attrs={"placeholder": "e.g. 2.5", "step": "0.5", "min": "0"},
             ),
         }
 
