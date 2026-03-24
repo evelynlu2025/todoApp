@@ -58,3 +58,6 @@ tesaAPP/
     ├── css/style.css
     └── js/app.js
 ```
+
+## Merged PR Log
+
