@@ -18,6 +18,7 @@ def _serialize_task(task):
         "description": task.description,
         "course": task.course,
         "due_date": task.due_date.isoformat(),
+        "estimated_hours": float(task.estimated_hours) if task.estimated_hours is not None else None,
         "completed": task.completed,
     }
 

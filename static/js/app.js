@@ -20,10 +20,11 @@ document.addEventListener('DOMContentLoaded', () => {
     editingId = task ? task.id : null;
     modalTitle.textContent = task ? 'Edit Task' : 'New Task';
     modalSubmit.textContent = task ? 'Save Changes' : 'Add Task';
-    form.title.value       = task ? task.title : '';
-    form.course.value      = task ? task.course : '';
-    form.due_date.value    = task ? task.due_date : '';
-    form.description.value = task ? task.description : '';
+    form.title.value            = task ? task.title : '';
+    form.course.value           = task ? task.course : '';
+    form.due_date.value         = task ? task.due_date : '';
+    form.estimated_hours.value  = task && task.estimated_hours != null ? task.estimated_hours : '';
+    form.description.value      = task ? task.description : '';
     overlay.classList.add('open');
     form.title.focus();
   }
@@ -109,6 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ${t.description ? `<p class="task-desc">${escape(t.description)}</p>` : ''}
         <div class="task-meta">
           <span class="due-badge ${badgeClass(t.due_date, t.completed)}">Due ${formatDate(t.due_date)}</span>
+          ${t.estimated_hours != null ? `<span class="hours-badge">${t.estimated_hours}h est.</span>` : ''}
         </div>
       </div>`;
   }
@@ -140,10 +142,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const payload = new FormData(form);
 
     if (editingId) {
+      const estHours = payload.get('estimated_hours');
       const body = JSON.stringify({
         title: payload.get('title'),
         course: payload.get('course'),
         due_date: payload.get('due_date'),
+        estimated_hours: estHours !== '' ? estHours : null,
         description: payload.get('description'),
       });
       const res = await fetch(`/api/tasks/${editingId}/`, {
@@ -181,12 +185,14 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       if (!res.ok) { showToast('Failed to toggle task. Please try again.'); return; }
       const data = await res.json();
+      const estEl = card.querySelector('.hours-badge');
       const t = {
         id: data.id,
         completed: data.completed,
         title: card.querySelector('.task-title').textContent,
         course: card.querySelector('.task-course')?.textContent || '',
         due_date: card.dataset.due,
+        estimated_hours: estEl ? parseFloat(estEl.textContent) : null,
         description: card.querySelector('.task-desc')?.textContent || '',
       };
       card.outerHTML = buildCard(t);
@@ -207,11 +213,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (e.target.closest('.edit-btn')) {
+      const estEl = card.querySelector('.hours-badge');
       openModal({
         id,
         title: card.querySelector('.task-title').textContent,
         course: card.querySelector('.task-course')?.textContent || '',
         due_date: card.dataset.due,
+        estimated_hours: estEl ? parseFloat(estEl.textContent) : null,
         description: card.querySelector('.task-desc')?.textContent || '',
       });
     }

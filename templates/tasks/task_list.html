@@ -23,7 +23,7 @@
 <div class="task-grid" id="task-grid"></div>
 
 <script id="initial-tasks" type="application/json">
-  [{% for task in tasks %}{"id":{{ task.id }},"title":"{{ task.title|escapejs }}","description":"{{ task.description|escapejs }}","course":"{{ task.course|escapejs }}","due_date":"{{ task.due_date|date:'Y-m-d' }}","completed":{{ task.completed|yesno:'true,false' }}}{% if not forloop.last %},{% endif %}{% endfor %}]
+  [{% for task in tasks %}{"id":{{ task.id }},"title":"{{ task.title|escapejs }}","description":"{{ task.description|escapejs }}","course":"{{ task.course|escapejs }}","due_date":"{{ task.due_date|date:'Y-m-d' }}","estimated_hours":{{ task.estimated_hours|default:"null" }},"completed":{{ task.completed|yesno:'true,false' }}}{% if not forloop.last %},{% endif %}{% endfor %}]
 </script>
 
 <!-- modal overlay -->
@@ -44,6 +44,10 @@
         <div class="form-group">
           <label for="id_due_date">Due date</label>
           <input type="date" id="id_due_date" name="due_date" required>
+        </div>
+        <div class="form-group">
+          <label for="id_estimated_hours">Est. hours <span class="optional">(optional)</span></label>
+          <input type="number" id="id_estimated_hours" name="estimated_hours" placeholder="e.g. 2.5" step="0.5" min="0">
         </div>
       </div>
       <div class="form-group">

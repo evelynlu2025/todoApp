@@ -395,7 +395,11 @@ body.page-auth .container {
 }
 .badge-normal { background: #f1f5f9; color: var(--text-muted); }
 .badge-today { background: #fef3c7; color: #92400e; }
-.badge-overdue { background: #fee2e2; color: #991b1b; }
+.hours-badge {
+  font-size: .72rem; font-weight: 600; padding: .2rem .6rem;
+  border-radius: 999px; background: #e0e7ff; color: #3730a3;
+}
+.badge-overdue { background: #fecaca; color: #991b1b; }
 
 .check-btn {
   background: none;
